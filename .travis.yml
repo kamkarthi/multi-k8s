@@ -23,6 +23,7 @@ after_success:
 
 deploy:
   provider: elasticbeanstalk
+  edge: true
   region: eu-west-1
   app:  multi-docker
   env:  MultiDocker-env
