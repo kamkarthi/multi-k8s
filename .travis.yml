@@ -20,3 +20,15 @@ after_success:
   - docker push kamkarthi/multi-nginx
   - docker push kamkarthi/multi-server
   - docker push kamkarthi/multi-worker
+
+deploy:
+  provider: elasticbeanstalk
+  region: eu-west-1
+  app:  multi-docker
+  env:  MultiDocker-env
+  bucket_name: elasticbeanstalk-eu-west-1-252266531447
+  bucket_path: multi-docker
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
