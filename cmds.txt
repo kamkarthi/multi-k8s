@@ -1,0 +1,13 @@
+kubectl create secret generic pgpassword --from-literal PGPASSWORD=password123
+kubectl scale -n default deployment server-deployment --replicas=3
+kubectl set image deployment client-deployment client=kamkarthi/multi-client:vxx
+minikube docker-env
+minikube dashboard
+
+#ingress-nginx
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
+
+#minikube
+minikube addons enable ingress
+
+
