@@ -4,10 +4,31 @@ kubectl set image deployment client-deployment client=kamkarthi/multi-client:vxx
 minikube docker-env
 minikube dashboard
 
+# travic cli
+docker run -it -v $(pwd):/app ruby:2.3 sh
+gem install travis --no-rdoc --no-ri
+travis login
+cp ~/service-account.json ./
+travis encrypt-file service-account.json -r kamkarthi/multi-k8s
+rm service-account.json #(NOTE: delete the service-account.json file)
+Please add the following to your build script (before_install stage in your .travis.yml, for instance):
+    openssl aes-256-cbc -K $encrypted_0c35eebf403c_key -iv $encrypted_0c35eebf403c_iv -in service-account.json.enc -out service-account.json -d
+
 #ingress-nginx
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
 
-#minikube
+#minikube - enable ingress controller
 minikube addons enable ingress
 
+# HELM3 notes
+curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 > get_helm.sh
+chmod 700 get_helm.sh
+./get_helm.sh
 
+#Tiller Setup ( not needed anymore for newer version helm3)
+kubectl create serviceaccount --namespace kube-system tiller
+kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+
+#INGRESS-NGINX controller
+helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+helm install nginx-ingress stable/nginx-ingress --set rbac.create=true
