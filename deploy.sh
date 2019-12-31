@@ -1,4 +1,3 @@
-#!/bin/sh
 docker build -t kamkarthi/multi-client:latest -t kamkarthi/multi-client:$GIT_SHA ./client/Dockerfile ./client
 docker build -t kamkarthi/multi-server:latest -t kamkarthi/multi-server:$GIT_SHA ./server/Dockerfile ./server
 docker build -t kamakarthi/multi-worker:latest -t kamakarthi/multi-worker:$GIT_SHA ./worker/Dockerfile ./worker
